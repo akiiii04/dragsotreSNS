@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('affilication');      //所属店舗
+            $table->string('affiliation');      //所属店舗
             $table->string('position');//役職
             $table->rememberToken();
             $table->timestamps();

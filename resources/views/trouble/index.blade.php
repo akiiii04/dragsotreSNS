@@ -9,9 +9,17 @@
     <body>
         <x-app-layout>
             <x-slot name="header">
-        　  トップページ
+        　  業務中に困ったこと 投稿一覧
              </x-slot>
-            <h1 class="">このサイトの使い方</h1>
+            @foreach ($posts as $post)
+                <div class='posts'>
+                    <a class='text-2xl' href='/trouble/posts/{{$post->id}}'>{{$post->title}}</a>
+                </div>
+            @endforeach
+                <div class='paginate'>
+                    {{ $posts->links() }}
+                </div>
+            
         </x-app-layout>
         
     </body>

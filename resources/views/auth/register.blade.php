@@ -16,6 +16,17 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
         
+                <!-- employee_number -->
+        <div class="mt-4">
+            <x-input-label for="employee_number" :value="__('社員番号')" />
+            <x-text-input id="employee_number" class="block mt-1 w-full" 
+            type="text" 
+            name="employee_number" 
+            :value="old('employee_number')" 
+            required autocomplete="off" />
+            <x-input-error :messages="$errors->get('employee_number')" class="mt-2" />
+        </div>
+        
         <!-- affiliation -->
         <div class="mt-4">
             <x-input-label for="affiliation" :value="__('所属')" />
@@ -23,7 +34,7 @@
             type="text" 
             name="affiliation" 
             :value="old('affiliation')" 
-            required autocomplete="organization" />
+            required autocomplete="off" />
             <x-input-error :messages="$errors->get('affiliation')" class="mt-2" />
         </div>
         
@@ -34,7 +45,7 @@
             type="text" 
             name="position" 
             :value="old('position')" 
-            required autocomplete="organization-title" />
+            required autocomplete="off" />
             <x-input-error :messages="$errors->get('position')" class="mt-2" />
         </div>
         

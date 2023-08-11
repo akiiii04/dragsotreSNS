@@ -7,9 +7,13 @@
 
         <!-- Email Address -->
         <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <x-input-label for="employee_number" :value="__('社員番号')" />
+            <x-text-input id="employee_number" class="block mt-1 w-full" 
+                            type="text" 
+                            name="employee_number" 
+                            :value="old('employee_number')"
+                            required autofocus autocomplete="off" />
+            <x-input-error :messages="$errors->get('employee_number')" class="mt-2" />
         </div>
 
         <!-- Password -->

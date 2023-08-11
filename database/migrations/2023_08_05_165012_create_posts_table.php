@@ -16,11 +16,10 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-  
             $table->foreignId('type_id')->constrained('types');
             $table->string('title');
             $table->string('body');
-            $table->string('picture');
+            $table->string('picture')->nullable();
             $table->tinyInteger('anonymity');
             $table->tinyInteger('unsolved');
             $table->timestamps();

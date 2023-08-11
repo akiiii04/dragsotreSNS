@@ -9,6 +9,14 @@ class Post extends Model
 {
     use HasFactory;
     
+    protected $fillable = [
+        'titele',
+        'body',
+        'picture',
+        'anonymity',
+        'unsolved',
+        ];
+    
     public function posts()
     {
         return $this->hasMany(Post::class);
@@ -39,8 +47,8 @@ class Post extends Model
         return $this->belongTo(Post::class);
     }
     
-    public function trouble_getByLimit(int $limit_count = 10)
+    public function trouble_getByLimit(int $limit_count = 5)
     {
-        return $this->where('type_id','1')->orderBy('updated_at', 'DESC')->limit($limit_count)->get();
+        return $this->where('type_id','1')->orderBy('updated_at', 'DESC')->paginate($limit_count);
     }
 }

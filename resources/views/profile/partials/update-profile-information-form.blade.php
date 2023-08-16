@@ -51,7 +51,7 @@
             <x-input-label for="affiliation" :value="__('所属')" />
             <x-text-input id="affiliation" name="affiliation" 
             type="text" class="mt-1 block w-full" 
-            :value="old('name', $user->affiliation)" 
+            :value="old('affiliation', $user->affiliation)" 
             required autofocus autocomplete="organization" />
             <x-input-error class="mt-2" :messages="$errors->get('affiliation')" />
         </div>

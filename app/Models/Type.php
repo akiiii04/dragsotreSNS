@@ -11,6 +11,6 @@ class Type extends Model
     
     public function posts()
     {
-        return $this->hasMany(Type::class);
+        return $this->hasMany(Post::class);
     }
 }

@@ -3,27 +3,27 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{{ $post->title }}</title>
+        <title>{{ $user->name }}</title>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
     </head>
     <body>
         <x-app-layout>
             <x-slot name="header">
-        　  {{ $post->title }}
+        　  {{ $user->name }}
              </x-slot>
         <h1 class="title">
-            {{ $post->title }}
+            {{ $user->name }}
         </h1>
-        <div class="content">
-            <div class="content__post">
-                <h3>本文</h3>
-                <p>{{ $post->body }}</p>    
-            </div>
+        <div class="affiliation">
+            <div>所属</div>
+            <p>{{ $user->affiliation }}</p>    
         </div>
-        <div class="footer">
-            <a href="/trouble/index">戻る</a>
+        <div class="position">
+            <div>役職</div>
+            <p>{{ $user->position }}</p>    
         </div>
+
         </x-app-layout>
        
     </body>

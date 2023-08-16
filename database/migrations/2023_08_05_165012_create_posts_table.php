@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('type_id')->constrained('types');
-            $table->string('title');
+            $table->string('title')->nullable();
             $table->string('body');
             $table->string('picture')->nullable();
             $table->tinyInteger('anonymity');

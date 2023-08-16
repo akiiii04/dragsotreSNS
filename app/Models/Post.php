@@ -10,7 +10,10 @@ class Post extends Model
     use HasFactory;
     
     protected $fillable = [
-        'titele',
+        'user_id',
+        'post_id',
+        'type_id',
+        'title',
         'body',
         'picture',
         'anonymity',
@@ -24,31 +27,43 @@ class Post extends Model
     
     public function users()
     {
-        return $this->belongToMany(Post::class);
+        return $this->belongsToMany(User::class);
     }
     
     public function tags()
     {
-        return $this->belongsToMany(Post::class);
+        return $this->belongsToMany(Tag::class);
     }
     
     public function user()
     {
-        return $this->belongTo(Post::class);
+        return $this->belongsTo(User::class);
     }
     
     public function post()
     {
-        return $this->belongTo(Post::class);
+        return $this->belongsTo(Post::class);
     }
     
     public function types()
     {
-        return $this->belongTo(Post::class);
+        return $this->belongsTo(Type::class);
     }
     
-    public function trouble_getByLimit(int $limit_count = 5)
+    public function getByLimit($type_id)
     {
-        return $this->where('type_id','1')->orderBy('updated_at', 'DESC')->paginate($limit_count);
+        $limit_count = 5;
+        $posts = $this->where('post_id', NULL)->where('type_id', $type_id)->orderBy('updated_at', 'DESC')->paginate($limit_count);
+        foreach($posts as $post){
+            if($post->anonymity==1) $post['user_id']='NULL';
+        }
+        return $posts;
     }
+    
+        public function getReply()
+    {
+        return $this->where('post_id', $this->id)->orderBy('updated_at', 'DESC')->get();
+    }
+
+
 }

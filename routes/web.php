@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\LikeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,13 +36,15 @@ Route::controller(PostController::class)->middleware(['auth'])->group(function()
     Route::put('/posts/{post}', 'update')->name('update');
     Route::delete('/posts/{post}', 'delete')->name('delete');
     Route::get('/posts/{post}/edit', 'edit')->name('edit');
+    Route::get('/picture/{post}/edit', 'edit_picture')->name('edit_picture');
+    Route::put('/picture/{post}', 'update_picture')->name('update_picture');
 
     
 });
 
 Route::controller(LikeController::class)->middleware(['auth'])->group(function(){
-    Route::post('/like/{post}', 'store')->name('like');
-    Route::post('/unlike/{post}', 'destroy')->name('unlike');
+    Route::get('/like/{post}', 'store')->name('like');
+    Route::get('/unlike/{post}', 'destroy')->name('unlike');
 });
 
 Route::controller(ProfileController::class)->middleware('auth')->group(function () {

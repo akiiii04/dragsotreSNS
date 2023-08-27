@@ -11,7 +11,7 @@
         　  @if ($type==2)業務情報を投稿する@endif
         </x-slot>
         <h1>Blog Name</h1>
-        <form action="/posts" method="POST">
+        <form action="/posts" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="title">
                 <h2>タイトル</h2>
@@ -30,13 +30,16 @@
             </div>
             <div class="anonymity">
                 <input type="hidden" name="post[anonymity]" value=0>
-                <input type="checkbox" checked="checked" name="post[anonymity]" value=1>匿名にする
+                <input type="checkbox" name="post[anonymity]" value=1>匿名にする
             </div>
             <div class="unsolved">
                 <input type="hidden" name="post[unsolved]" value=0>
-                <input type="checkbox" checked="checked" name="post[unsolved]" value=1>未解決
+                <input type="checkbox" name="post[unsolved]" value=1>未解決
             </div>
             <div class="unsolved"></div>
+            <div class="image">
+                <input type="file" name="picture">
+            </div>
             <input type="hidden" name="post[user_id]" value={{ Auth::user()->id }}>
             <input type="hidden" name="post[type_id]" value={{ $type }}>
             <input type="submit" value="保存"/>

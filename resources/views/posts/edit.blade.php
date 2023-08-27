@@ -23,14 +23,28 @@
                 <textarea name="post[body]" placeholder="今日も1日お疲れさまでした。">{{ old('post.body', $post->body) }}</textarea>
                 <p class="body__error" style="color:red">{{ $errors->first('post.body') }}</p>
             </div>
+            <div class="tag">
+                <h2>タグ</h2>
+                <input type="text" name="tag_name" placeholder="タグ" value="{{ old('tag_name', $tag) }}"/>
+                <p class="title__error" style="color:red">{{ $errors->first('tag.name') }}</p>
+            </div>
             <div class="anonymity">
                 <input type="hidden" name="post[anonymity]" value=0>
+                @if($post->anonymity==1)
                 <input type="checkbox" checked="checked" name="post[anonymity]" value=1>匿名にする
+                @else
+                <input type="checkbox" name="post[anonymity]" value=1>匿名にする
+                @endif
             </div>
             <div class="unsolved">
                 <input type="hidden" name="post[unsolved]" value=0>
+                @if($post->unsolved==1)
                 <input type="checkbox" checked="checked" name="post[unsolved]" value=1>未解決
+                @else
+                <input type="checkbox" name="post[unsolved]" value=1>未解決
+                @endif
             </div>
+
             <div class="unsolved"></div>
             <input type="hidden" name="post[user_id]" value={{ Auth::user()->id }}>
             <input type="hidden" name="post[type_id]" value={{ $post->type_id }}>

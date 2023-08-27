@@ -3,19 +3,31 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Post;
+use App\Models\Like;
 use Auth;
 
 class LikeController extends Controller
 {
-        public function store($post)
+        public function store($id)
     {
-        Auth::user()->like($post);
-        return 'ok!'; //レスポンス内容
+        Like::create([
+            'post_id' => $id,
+            'user_id' => Auth::id(),
+        ]);
+
+        session()->flash('success', 'You Liked the Reply.');
+
+        return redirect()->back();
     }
 
-    public function destroy($post)
+    public function destroy($id)
     {
-        Auth::user()->unlike($post);
-        return 'ok!'; //レスポンス内容
+        $like = Like::where('post_id', $id)->where('user_id', Auth::id())->first();
+        $like->delete();
+
+        session()->flash('success', 'You Unliked the Reply.');
+
+        return redirect()->back();
     }
 }

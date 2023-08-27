@@ -19,4 +19,9 @@ class Tag extends Model
     {
         return $this->hasMany(Post::class);
     }
+    public function getTags($post_id)
+    {
+        return where("post_id", $post_id)->get();
+    }
+    
 }

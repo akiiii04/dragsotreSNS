@@ -17,10 +17,10 @@
                         {{ __('トップページ') }}
                     </x-nav-link>
                     <x-nav-link :href="route('index', ['type' => 1])" :active="request()->is('1/index')">
-                        {{ __('業務中に困ったこと') }}
+                        {{ __('困ったこと') }}
                     </x-nav-link>
                     <x-nav-link :href="route('index', ['type' => 2])" :active="request()->is('2/index')">
-                        {{ __('業務情報') }}
+                        {{ __('役立つ情報') }}
                     </x-nav-link>
                     
 
@@ -46,7 +46,7 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                            {{ __('プロフィール') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->
@@ -56,7 +56,7 @@
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                                {{ __('ログアウト') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>

@@ -6,23 +6,27 @@
         <title>{{ $user->name }}</title>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+        <link href="/css/profile.css" rel="stylesheet">
     </head>
     <body>
         <x-app-layout>
             <x-slot name="header">
         　  {{ $user->name }}
              </x-slot>
-        <h1 class="title">
-            {{ $user->name }}
-        </h1>
-        <div class="affiliation">
-            <div>所属</div>
-            <p>{{ $user->affiliation }}</p>    
-        </div>
-        <div class="position">
-            <div>役職</div>
-            <p>{{ $user->position }}</p>    
-        </div>
+             <section>
+                <h1 class="title">
+                    {{ $user->name }}
+                </h1>
+                <div class="affiliation">
+                    <div></div>
+                    <p>所属: {{ $user->affiliation }}</p>    
+                </div>
+                <div class="position">
+                    <div></div>
+                    <p>役職: {{ $user->position }}</p>    
+                </div>
+             </section>
+        
 
         </x-app-layout>
        

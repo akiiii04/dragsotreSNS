@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 use Auth;
 
 class Post extends Model
@@ -21,7 +22,7 @@ class Post extends Model
         'unsolved',
         ];
     
-    public function posts()
+    public function childposts()
     {
         return $this->hasMany(Post::class);
     }
@@ -41,7 +42,7 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
     
-    public function post()
+    public function parentpost()
     {
         return $this->belongsTo(Post::class);
     }
@@ -58,7 +59,7 @@ class Post extends Model
     
     public function getSearchPost($type_id, $search)
     {
-        $limit_count = 5;
+        $limit_count = 10;
         $spaceConversion = mb_convert_kana($search, 's');
         $wordArraySearched = explode(' ', $spaceConversion);
             
@@ -79,7 +80,7 @@ class Post extends Model
     }
     
     public function getPost($type_id){
-        $limit_count=5;
+        $limit_count = 10;
         $posts = $this->where('post_id', NULL)->where('type_id', $type_id)->orderBy('updated_at', 'DESC')->paginate($limit_count);
         /*foreach($posts as $post){
             if($post->anonymity==1) $post['user_id']='NULL';
@@ -87,29 +88,62 @@ class Post extends Model
         return $posts;
     }
     
-    public function getReply()
+    public function getTimeDifferenceAttribute()//現在時刻との差を取得
     {
-        return $this->where('post_id', $this->id)->orderBy('updated_at', 'DESC')->get();
+        $now = Carbon::now();
+        $createdAt = $this->created_at;
+
+        return $createdAt->diffForHumans($now);
     }
     
-    public function getSource()
+    public function getReply()
     {
-        return $this->where('id', $this->post_id)->first();
+        $depth = 5;
+        return $this->recursiveAllChildPosts($depth);
+        
+    }
+    
+    public function recursiveAllChildPosts($depth)
+    {
+        $childPosts = $this->childPosts;
+        $childPosts_sorted = $this->sortChildPosts($childPosts);
+        if ($depth > 1) {
+            foreach ($childPosts_sorted as $childPost) {
+                $childPost->childPosts = $childPost->recursiveAllChildPosts($depth - 1);
+            }
+        }
+        return $childPosts_sorted;
+    }
+    
+    public function sortChildPosts($childPosts)
+    {
+        return $childPosts->sort(function ($a, $b) {
+        $aLikesCount = $a->likes->count();
+        $bLikesCount = $b->likes->count();
+
+        // いいね数が同じ場合は投稿日時で比較
+        if ($aLikesCount === $bLikesCount) {
+            return $a->created_at <=> $b->created_at;
+        }
+
+        // いいね数で比較
+        return $bLikesCount <=> $aLikesCount;
+    });
     }
 
     public function is_liked_by_auth_user()
-  {
-    $id = Auth::id();
-
-    $likers = array();
-    foreach($this->likes as $like) {
-      array_push($likers, $like->user_id);
+    {
+        $id = Auth::id();
+    
+        $likers = array();
+        foreach($this->likes as $like) {
+          array_push($likers, $like->user_id);
+        }
+    
+        if (in_array($id, $likers)) {
+          return true;
+        } else {
+          return false;
+        }
     }
-
-    if (in_array($id, $likers)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 }

@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
                 'name' => '山本大晃',
                 'email' => 'hiroaki200204@gamil.com',
-                'password' => Hash::make('yyuujjii2'),
+                'password' => Hash::make('TestUser909'),
                 'employee_number' => '000000',
                 'affiliation' => 'A店',
                 'position' => 'パートナー',
@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
          DB::table('users')->insert([
                 'name' => 'テストユーザー',
                 'email' => NULL,
-                'password' => Hash::make('yyuujjii2'),
+                'password' => Hash::make('TestUser909'),
                 'employee_number' => '111111',
                 'affiliation' => 'A店',
                 'position' => 'パートナー',

@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use DateTime;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -15,15 +17,25 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('user')->insert([
+        DB::table('users')->insert([
                 'name' => '山本大晃',
                 'email' => 'hiroaki200204@gamil.com',
-                'password' => ' $2y$10$JpsdImNMLdI3ZRsdQHtPY.dMKvy/yAEjtvkolR0tkacns4QvuBfc2',
+                'password' => Hash::make('yyuujjii2'),
                 'employee_number' => '000000',
                 'affiliation' => 'A店',
                 'position' => 'パートナー',
                 'created_at' => new DateTime(),
                 'updated_at' => new DateTime(),
          ]);//
+         DB::table('users')->insert([
+                'name' => 'テストユーザー',
+                'email' => NULL,
+                'password' => Hash::make('yyuujjii2'),
+                'employee_number' => '111111',
+                'affiliation' => 'A店',
+                'position' => 'パートナー',
+                'created_at' => new DateTime(),
+                'updated_at' => new DateTime(),
+         ]);
     }
 }

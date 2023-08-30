@@ -20,7 +20,7 @@
 
                  <form method="GET" action="/{{$type}}/index">
                     <div class="search">
-                            <input type="search" placeholder="キーワードを入力" name="search" value="@if(isset($search)){{ $search }} @endif">
+                            <input type="search" placeholder="キーワードを入力" name="search" value="@if(isset($search)){{ $search }}@endif">
                             <button class="submit" type="submit">検索</button>
                     </div>
                     

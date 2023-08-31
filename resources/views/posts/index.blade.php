@@ -31,9 +31,9 @@
                     </div>
                 @foreach ($posts as $post)
                     <div class='post'>
-                        <a class='title' href='../../posts/{{$post->id}}'>{{ Str::limit($post->title, 56, '...') }}</a>
+                        <a class='title' href='../../posts/{{$post->id}}'>{{ Str::limit($post->title, 54, '...') }}</a>
                         <div class='body'>
-                            {{ Str::limit($post->body, 90, '...') }}
+                            {{ Str::limit($post->body, 84, '...') }}
                         </div>
                         <div class='tags'>
                             @foreach($post->tags as $tag)

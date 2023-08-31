@@ -78,8 +78,14 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+            <x-responsive-nav-link :href="route('top')" :active="request()->routeIs('top')">
+                {{ __('トップページ') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('index', ['type' => 1])" :active="request()->is('1/index')">
+                {{ __('困ったこと') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('index', ['type' => 2])" :active="request()->is('2/index')">
+                {{ __('役立つ情報') }}
             </x-responsive-nav-link>
         </div>
 

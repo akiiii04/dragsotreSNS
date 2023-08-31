@@ -57,34 +57,30 @@ class Post extends Model
         return $this->hasMany(Like::class, 'post_id');
     }
     
-    public function getSearchPost($type_id, $search)
+    public function getSearchPost($type_id, $search) //キーワードに当てはまる投稿を返す
     {
         $limit_count = 10;
-        $spaceConversion = mb_convert_kana($search, 's');
-        $wordArraySearched = explode(' ', $spaceConversion);
+        $spaceConversion = mb_convert_kana($search, 's'); //全角スペースを半角スペースへ
+        $wordArraySearched = explode(' ', $spaceConversion); //半角スペースを区切り文字に配列を作成
             
         $posts = $this->where('post_id', NULL)->where('type_id', $type_id)
             ->where(function ($query) use ($wordArraySearched) {
-                foreach ($wordArraySearched as $keyword) {
+                foreach ($wordArraySearched as $keyword) { 
                     $query->where('title', 'like', '%' . $keyword . '%')
                         ->orWhere('body', 'like', '%' . $keyword . '%')
                         ->orWhereHas('tags', function ($subquery) use ($keyword) {
                           $subquery->where('name', 'like', '%' . $keyword . '%');
-                      });
+                      });//それぞれのキーワードに対し、タイトル、本文、タグのいずれかに当てはまる投稿を返す
                 }
             })->orderBy('updated_at', 'DESC')->paginate($limit_count);
-        /*foreach($posts as $post){
-            if($post->anonymity==1) $post['user_id']='NULL';
-        }*/
+
         return $posts;
     }
     
-    public function getPost($type_id){
+    public function getPost($type_id){ //キーワードがない場合
         $limit_count = 10;
         $posts = $this->where('post_id', NULL)->where('type_id', $type_id)->orderBy('updated_at', 'DESC')->paginate($limit_count);
-        /*foreach($posts as $post){
-            if($post->anonymity==1) $post['user_id']='NULL';
-        }*/
+        
         return $posts;
     }
     
@@ -98,12 +94,12 @@ class Post extends Model
     
     public function getReply()
     {
-        $depth = 5;
+        $depth = 5; //取得するコメントの数を制限
         return $this->recursiveAllChildPosts($depth);
         
     }
     
-    public function recursiveAllChildPosts($depth)
+    public function recursiveAllChildPosts($depth) //返信を再帰的に取得
     {
         $childPosts = $this->childPosts;
         $childPosts_sorted = $this->sortChildPosts($childPosts);
@@ -115,7 +111,7 @@ class Post extends Model
         return $childPosts_sorted;
     }
     
-    public function sortChildPosts($childPosts)
+    public function sortChildPosts($childPosts) //表示するコメントの優先順位をつける
     {
         return $childPosts->sort(function ($a, $b) {
         $aLikesCount = $a->likes->count();
@@ -147,3 +143,6 @@ class Post extends Model
         }
     }
 }
+        /*foreach($posts as $post){
+            if($post->anonymity==1) $post['user_id']='NULL';
+        }*/

@@ -18,7 +18,9 @@ class PostController extends Controller
         $search = $request->input('search');
         
         if($search){
-             return view('posts.index')->with(['posts' => $post->getSearchPost($type,$search)])->with(['search' => $search])->with(['type' => $type]);
+             return view('posts.index')->with(['posts' => $post->getSearchPost($type,$search)])
+             ->with(['search' => $search])
+             ->with(['type' => $type]);
         }
 
         else
@@ -52,11 +54,11 @@ class PostController extends Controller
     
     public function show(Post $post)
     {
-        if($post->post_id==NULL) 
+        if($post->post_id==NULL) //通常の投稿として処理
         return view('posts.show')->with(['post' => $post])
         ->with(['replies' => $post->getReply()]);
         
-        else{
+        else{ //返信として処理
             $parentPost = Post::find($post->post_id);
             return view('posts.show_reply')->with(['post' => $post])
                 ->with(['replies' => $post->getReply()])->with(['parent' => $parentPost]);
@@ -66,8 +68,8 @@ class PostController extends Controller
     
     public function edit(Post $post)
     {
-        if($post->user_id==Auth::id()){
-            if($post->post_id==NULL){
+        if($post->user_id==Auth::id()){//ログインユーザーと投稿者が一致するとき編集可能
+            if($post->post_id==NULL){ //通常の投稿として処理
                 $tag_input="";
                 $tags=Post_Tag::where("post_id", $post->id)->get();
                 foreach($tags as $tag)
@@ -77,7 +79,7 @@ class PostController extends Controller
                 }
                 return view('posts.edit')->with(['post' => $post])->with(['tag' => $tag_input]);
             }
-            else{
+            else{ //返信として処理
                 $parentPost = Post::find($post->post_id);
                 return view('posts.edit_reply')->with(['post' => $post])->with(['parent' => $parentPost]);
             }
@@ -86,7 +88,7 @@ class PostController extends Controller
     }
     public function edit_picture(Post $post)
     {   
-        if($post->user_id==Auth::id())
+        if($post->user_id==Auth::id())//ログインユーザーと投稿者が一致するとき編集可能
         return view('posts.edit_picture')->with(['post' => $post]);
     }
      public function update_picture(PostRequest $request, Post $post)

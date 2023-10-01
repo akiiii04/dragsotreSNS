@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width">
         <title>{{ Str::limit($parent->title, 56, '...') }}に対する返信</title>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -35,7 +36,7 @@
                         </div>
                     @endif
                     @if($parent->post_id==NULL)
-                        <a class="title" href="/posts/{{$parent->id}}">{{ Str::limit($parent->title, 56, '...') }}</a>
+                        <div><a class="title" href="/posts/{{$parent->id}}">{{ Str::limit($parent->title, 56, '...') }}</a></div>
                     @endif
                     <div class='tags'>
                         @foreach($parent->tags as $tag)
@@ -52,9 +53,9 @@
                             </div>
                         @endif
                     </div>
-                    <div class="body">
-                        <p>{!! nl2br($parent->body) !!}</p>    
-                    </div>
+                    <a class="body" href="/posts/{{$parent->id}}">
+                        {!! nl2br($parent->body) !!}
+                    </a>
                     @if($parent->user_id==Auth::user()->id)
                         <div class="edits">
                             <a class="edit" href="/posts/{{ $parent->id }}/edit">編集する</a>

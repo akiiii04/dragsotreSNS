@@ -126,10 +126,13 @@ class PostController extends Controller
                 return redirect('/posts/' . $post->id);
             }
         }
-            
-                
-        
     }
+    
+    public function delete(Post $post){
+        $post->delete();    
+        return redirect($post->type_id . '/index');
+    }
+    
         public function reply(Post $post)
     {
         return view('posts.create_reply')->with(['post' => $post]);

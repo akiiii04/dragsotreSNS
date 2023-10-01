@@ -6,7 +6,8 @@ section{
     margin: 0 auto;
 }
 .title .input{
-    width: 800px;
+    width: 100%;
+    max-width: 800px;
 }
 .title{
     margin: 20px 0;
@@ -16,14 +17,16 @@ section{
 }
 .body .input{
     resize: none;
-    width: 800px;
+    width: 100%;
+    max-width: 800px;
     height: 300px;
 }
 .tag{
     margin: 20px 0;
 }
 .tag .input{
-    width: 800px;
+    width: 100%;
+    max-width: 800px;
 }
 .tag .ex{
     color: #808080;

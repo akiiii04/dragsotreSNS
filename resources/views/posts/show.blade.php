@@ -45,6 +45,11 @@
                     @if($post->user_id==Auth::user()->id)
                         <div class="edits">
                             <a class="edit" href="/posts/{{ $post->id }}/edit">編集する</a>
+                            <form action="/posts/{{ $post->id }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <input type="submit" class"delete" value="削除する"/>
+                            </form>
                             @if($post->picture==NULL&&$post->user_id==Auth::user()->id)
                                 <div class="add"><a href="/picture/{{ $post->id }}/edit">画像を追加する</a></div>
                             @endif

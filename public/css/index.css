@@ -18,43 +18,65 @@ section{
     display: flex;
     margin: 20px 0;
 }
+.search .input{
+    width: 15rem;
+}
 .search .submit{
     padding: 0px 6px;
     border: 1px solid #000000;
 }
 .post{
     position: relative;
-    padding: 10px 30px;
+    padding: 1rem 1.5rem;
     margin-top: 20px; 
     border: 2px solid #000000;
     border-radius: 1vh;
 }
 .title{
-    font-size: 30px;
+    font-size: 2rem;
+    width: 100%;
     color: #117ec6;
 }
 .title:hover{
     text-decoration: underline;
 }
 .body{
-    position: absolute;
-    font-size: 20px;
+    position: relative;
+    font-size: 1.2rem;
     max-width: 740px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.tags{
+    display: flex;
+    position: relative;
+    margin: 1rem 0;
+    gap: 1rem;
+}
+.tag{
+    font-size: 1rem;
+    padding: 2px;
+    border: 1px solid #000000;
+}
+.post .contents{
+    display: flex;
+    justify-content: space-between;
+    position: relative;
 }
 .content{
     display: flex;
-    position: absolute;
-    top: 130px;
-    gap: 0 20px;
+    position: relative;
+    max-width: 400px;
+    gap: 0 1rem;
 }
-
 .badge{
-    font-size: 18px;
+    font-size: 1rem;
 }
 .like {
     position: relative;
     display: inline-block;
-    font-size: 18px;
+    font-size: 1rem;
     cursor: pointer;
   }
 .tooltip-text {
@@ -74,45 +96,48 @@ section{
     visibility: visible;
 }
 .comment{
-    font-size: 18px;
+    font-size: 1rem;
 }
 .unsolved{
-    font-size: 18px;
+    font-size: 1rem;
     padding: 0 2px;
     color: #ffffff;
     background-color: #ff0000;
 }
-.tags{
-    display: flex;
-    position: absolute;
-    left: 30px;
-    top: 92px;
-    gap: 15px
-}
-.tag{
-    font-size: 16px;
-    padding: 2px;
-    border: 1px solid #000000;
-}
-
 .user_time{
     display: flex;
-    justify-content: flex-end;
-    margin-top: 70px;
-    gap: 0 20px;
+    max-width: 400px;
+    gap: 0 1rem;
 }
 .user .name{
-    font-size: 20px;
+    font-size: 1.1rem;
 }
 .user .name:hover{
     text-decoration: underline;
 }
 .user .anonymous{
-    font-size: 20px;
+    font-size: 1.1rem;
 }
 .time{
-    font-size: 20px;
+    font-size: 1.1rem;
 }
 .paginate{
     margin-top: 20px;
+}
+
+@media only screen and (max-width: 510px){
+    html{
+      font-size: 12px;
+    }
+
+}
+@media only screen and (max-width: 380px){
+    html{
+        font-size: 8px;
+    }
+    .post .contents{
+        display: block;
+        justify-content: space-between;
+        position: relative;
+    }
 }

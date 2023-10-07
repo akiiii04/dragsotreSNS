@@ -18,7 +18,7 @@
                     <div class="posting">
                         <a class='link' href='/{{$type}}/create/'>投稿する</a>
                     </div>
-
+                    
                  <form method="GET" action="/{{$type}}/index">
                     <div class="search">
                             <input class="input" type="search" placeholder="キーワードを入力" name="search" value="@if(isset($search)){{ $search }}@endif">
@@ -43,38 +43,22 @@
                         </div>
                         <div class="contents">
                             <div class='content'>
-                               @if($post->type_id==1)
-                                    <div class="votes">
-                                        <span class="badge">{{ $post->likes->count() }}票</span>
-                                        @if($post->is_liked_by_auth_user())
-                                            <a href="/unlike/{{$post->id}}" class="like">
-                                                　投票をやめる
-                                                <span class="tooltip-text">自分も同じようなことで困ったことがある</span>
-                                            </a>
-                                        @else
-                                            <a href="/like/{{$post->id}}" class="like">
-                                                　投票をする
-                                                <span class="tooltip-text">自分も同じようなことで困ったことがある</span>
-                                            </a>
-                                        @endif
-                                    </div>
-                                @else
                                     <div class="likes">
                                         @if($post->is_liked_by_auth_user())
-                                            <a href="/unlike/{{$post->id}}" class="btn btn-success btn-sm">
-                                                <span style="color:#FF00CC">&hearts;</span>
-                                                <span class="badge">{{ $post->likes->count() }}</span>
+                                            <a href="/unlike/{{$post->id}}" class="like">
+                                                <span class="heart">&hearts;</span>
+                                                <span class="hovered">&#9825;</span>
+                                                <span class="count">{{ $post->likes->count() }}</span>
                                             </a>
                                         @else
-                                            <a href="/like/{{$post->id}}" class="btn btn-secondary btn-sm">
-                                                &#9825;
-                                                <span class="badge">{{ $post->likes->count() }}</span>
+                                            <a href="/like/{{$post->id}}" class="unlike">
+                                                <span class="heart">&#9825;</span>
+                                                <span class="count">{{ $post->likes->count() }}</span>
                                             </a>
                                         @endif
-                                    </div>
-                                @endif
+                                </div>
                                 <div class='comment'>
-                                    {{ $post->childposts->count() }}コメント
+                                    <img src="{{ asset('images/balloon.svg') }}" class="balloon">{{ $post->childposts->count() }}
                                 </div>
                                 @if($post->unsolved==1)
                                     <div class='unsolved'>
@@ -85,11 +69,18 @@
                             <div class='user_time'>
                                 <div class='user'>
                                     <span class="contributor">投稿者:</span>
-                                    @if($post->anonymity==1&&$post->user_id!=Auth::user()->id)<a class='anonymous'>匿名希望投稿者</a>@endif
-                                    @if($post->anonymity==1&&$post->user_id==Auth::user()->id)
-                                    <a class='name' href='../../profile/{{$post->user_id}}'>{{ $post->user->name }}(匿名)</a>
+                                    @if($post->user_id==Auth::user()->id)
+                                        <a class='name' href='../../profile/{{$post->user_id}}'>自分</a>
                                     @endif
-                                    @if($post->anonymity==0)<a class='name' href='../../profile/{{$post->user_id}}'>{{ $post->user->name }}</a>@endif
+                                    @if($post->anonymity==1&&$post->user_id!=Auth::user()->id)
+                                        <a class='name'>匿名希望投稿者</a>
+                                    @endif
+                                    @if($post->anonymity==1&&$post->user_id==Auth::user()->id)
+                                        <a class='name' href='../../profile/{{$post->user_id}}'>(匿名)</a>
+                                    @endif
+                                    @if($post->anonymity==0&&$post->user_id!=Auth::user()->id)
+                                        <a class='name' href='../../profile/{{$post->user_id}}'>{{ $post->user->name }}</a>
+                                    @endif
                                 </div>
                                 <div class='time'>
                                     {{$post->time_difference}}

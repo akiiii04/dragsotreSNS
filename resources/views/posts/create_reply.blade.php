@@ -21,6 +21,7 @@
             @endif
         </x-slot>
             <section>
+                <button type="button" onclick="history.back()">返信をやめる</button>
                 <form action="/posts/" method="POST">
                     @csrf
                     <div class="body">

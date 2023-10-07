@@ -1,14 +1,14 @@
 @charset "UTF-8";
 
 section{
-    width: 100%;
+    width: 98%;
     max-width: 800px;
     margin: 0 auto;
     margin-bottom: 50px;
 }
 .posting{
-    font-size: 30px;
-    margin-top: 20px;
+    font-size: 2rem;
+    margin-top: 1.5rem;
 }
 
 .posting .link:hover{
@@ -55,7 +55,7 @@ section{
     gap: 1rem;
 }
 .tag{
-    font-size: 1rem;
+    font-size: 0.8rem;
     padding: 2px;
     border: 1px solid #000000;
 }
@@ -70,15 +70,32 @@ section{
     max-width: 400px;
     gap: 0 1rem;
 }
-.badge{
-    font-size: 1rem;
+.like .heart{
+    color: #FF00CC;
 }
-.like {
-    position: relative;
-    display: inline-block;
-    font-size: 1rem;
-    cursor: pointer;
-  }
+.like span:nth-child(1){
+    position: absolute;
+}
+.like span:nth-child(2){
+    position: absolute;
+    opacity:0;
+}
+.post .like .count{
+    padding-left: 20px;
+}
+.like span{
+    transition: all .3s;
+}
+.like:hover span:nth-child(2){
+    opacity:1;
+}
+.like:hover span:nth-child(1){
+    opacity:0;
+}
+.unlike:hover{
+    color: #FF00CC;
+    transition: 0.3s;
+}
 .tooltip-text {
     visibility: hidden;
     background-color: rgba(0, 0, 0, 0.8);
@@ -96,8 +113,15 @@ section{
     visibility: visible;
 }
 .comment{
+    display: flex;
     font-size: 1rem;
+    gap: 2px;
 }
+
+.balloon{
+    width: 1.2rem;
+}
+
 .unsolved{
     font-size: 1rem;
     padding: 0 2px;
@@ -108,36 +132,61 @@ section{
     display: flex;
     max-width: 400px;
     gap: 0 1rem;
-}
-.user .name{
-    font-size: 1.1rem;
+    align-items: flex-end;
 }
 .user .name:hover{
     text-decoration: underline;
 }
-.user .anonymous{
-    font-size: 1.1rem;
+.user{
+    font-size: 0.8rem;
 }
 .time{
-    font-size: 1.1rem;
+    font-size: 0.8rem;
 }
 .paginate{
     margin-top: 20px;
 }
 
-@media only screen and (max-width: 510px){
+@media only screen and (max-width: 530px){
     html{
       font-size: 12px;
     }
-
+    .post{
+    border: 1.7px solid #000000;
+    }
+    .post .like .count{
+        padding-left: 17px;
+    }
+    .reply .like .count{
+        padding-left: 12px;
+    }
 }
-@media only screen and (max-width: 380px){
+@media only screen and (max-width: 400px){
     html{
         font-size: 8px;
     }
-    .post .contents{
-        display: block;
-        justify-content: space-between;
-        position: relative;
+    .post .like .count{
+        padding-left: 13px;
     }
+    .reply .like .count{
+        padding-left: 12px;
+    }
+
+    .post{
+    border: 1px solid #000000;
+    }
+
+    .post .body{
+        display: none;
+    }
+    .post .title{
+        font-size: 2.3rem;
+    }
+    .post .tag{
+        border: 0.7px solid #000000;
+    }
+    .post .content{
+        align-items: flex-end;
+    }
+
 }

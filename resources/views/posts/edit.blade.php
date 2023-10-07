@@ -17,6 +17,7 @@
             <div class="edit">{{ Str::limit($post->title, 56, '...') }}を編集する</div>
         </x-slot>
             <section>
+                <button type="button" onclick="history.back()">編集をやめる</button>
                 <form action="/posts/{{ $post->id }}" method="POST">
                     @csrf
                     @method('PUT')

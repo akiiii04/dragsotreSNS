@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Auth;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     
     protected $fillable = [
         'user_id',
@@ -24,7 +26,7 @@ class Post extends Model
     
     public function childposts()
     {
-        return $this->hasMany(Post::class);
+        return $this->hasMany(Post::class)->withTrashed();
     }
     
     public function users()
@@ -101,6 +103,7 @@ class Post extends Model
     
     public function recursiveAllChildPosts($depth) //返信を再帰的に取得
     {
+
         $childPosts = $this->childPosts;
         $childPosts_sorted = $this->sortChildPosts($childPosts);
         if ($depth > 1) {

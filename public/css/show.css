@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 section{
-    width: 100%;
+    width: 98%;
     max-width: 800px;
     margin: 0 auto;
 }
@@ -22,16 +22,16 @@ section{
 .post .title{
     font-size: 3rem;
     font-weight: bold;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
-.tags{
+.post .tags{
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 2rem;
     gap: 1.5rem;
 }
 .tag{
-    font-size: 1.4rem;
+    font-size: 1rem;
     padding: 2px;
     border: 1px solid #000000;
 }
@@ -39,18 +39,18 @@ section{
     position: relative;
 }
 .picture{
-    width:50%; 
+    width:40%; 
 }
 .pictures .change{
-    margin-left: 15%;
+    margin-left: 13%;
     text-align: center;
-    font-size: 1.4rem
+    font-size: 1.1rem
 }
 .pictures .change:hover{
     text-decoration: underline;
 }
-.body{
-    font-size: 1.5rem;
+.post .body{
+    font-size: 1.2rem;
     margin-top: 20px;
     margin-bottom: 40px;
 }
@@ -60,10 +60,14 @@ section{
     margin-bottom: 15px;
     top: 10px;
     gap: 0 20px;
-    font-size: 1.4rem;
+    font-size: 1.1rem;
 }
 .post .edit:hover{
     text-decoration: underline;
+}
+.post .delete:hover{
+    text-decoration: underline;
+    cursor: pointer;
 }
 .post .add:hover{
     text-decoration: underline;
@@ -75,23 +79,53 @@ section{
 }
 .post .content{
     display: flex;
-    gap: 0 2rem;
+    gap: 0 1rem;
 }
 .post .comment{
-    font-size: 1.4rem;
+    display: flex;
+    font-size: 1.1rem;
+    gap: 2px;
+}
+.post .balloon{
+    width: 1.2rem;
 }
 .post .likes{
-    font-size: 1.4rem;
+    font-size: 1.1rem;
 }
-.badge{
-    font-size: 1.4rem;
+.post .hearts .count{
+    font-size: 1.1rem;
 }
-.like {
-    position: relative;
-    display: inline-block;
-    font-size: 1.4rem;
-    cursor: pointer;
-  }
+.post .hearts{
+    font-size: 1rem;
+}
+.like .heart{
+    color: #FF00CC;
+}
+.like span:nth-child(1){
+    position: absolute;
+}
+.like span:nth-child(2){
+    position: absolute;
+    opacity:0;
+}
+.post .like .count{
+    padding-left: 20px;
+}
+.like span{
+    transition: all .3s;
+}
+.like:hover span:nth-child(2){
+    opacity:1;
+}
+.like:hover span:nth-child(1){
+    opacity:0;
+}
+.unlike:hover{
+    color: #FF00CC;
+    transition: 0.3s;
+}
+
+
 .tooltip-text {
     visibility: hidden;
     background-color: rgba(0, 0, 0, 0.8);
@@ -109,30 +143,29 @@ section{
     visibility: visible;
 }
 .post .create_reply{
-    font-size: 1.4rem;
+    font-size: 1.1rem;
 }
 .post .create_reply:hover{
     text-decoration: underline;
 }
-.user_time{
+.post .user_time{
     display: flex;
-    gap: 0 2rem;
+    gap: 0 1rem;
 }
 .post .user .contributor{
-    font-size: 1.3rem;
+    font-size: 1.1rem;
 }
 .post .user .name{
-    font-size: 1.4rem;
+    font-size: 1.1rem;
 }
 .user .name:hover{
     text-decoration: underline;
 }
-.user .anonymous{
-    font-size: 1.4rem;
+.post .user .anonymous{
+    font-size: 1.1rem;
 }
 .post .time{
-    margin-top: 2px;
-    font-size: 1.4rem;
+    font-size: 1.1rem;
 }
 .ALLreplies{
     margin-top: 2rem;
@@ -159,7 +192,7 @@ section{
     margin-left: 10%;
 }
 .reply .body{
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     
 }
 .reply .body:hover{
@@ -168,44 +201,51 @@ section{
 .reply .contents{
     display: flex;
     justify-content: space-between;
-    max-width: 100%;
     position: relative;
-    margin-top: 1.5rem;
+    margin-top: 1rem;
 }
 .reply .content{
     display: flex;
-    gap: 0 1.5rem;
+    gap: 0 0.8rem;
 }
 .reply .likes{
-    font-size: 1.4rem;
+    font-size: 0.8rem;
+}
+.reply .heart{
+    font-size: 0.8rem;
+}
+.reply .count{
+    font-size: 0.8rem;
+}
+.reply .like .count{
+    padding-left: 15px;
 }
 .reply .comment{
-    font-size: 1.4rem;
+    display: flex;
+    font-size: 0.8rem;
+    gap: 2px;
+}
+.reply .balloon{
+    width: 1.2rem;
 }
 .reply .create_reply{
-    font-size: 1.4rem;
+    font-size: 0.8rem;
 }
 .reply .create_reply:hover{
     text-decoration: underline;
 }
 .reply .user_time{
     display: flex;
-    gap: 0 1.5rem;
+    gap: 0 0.8rem;
 }
-.reply .user .contributor{
-    font-size: 1.2rem;
-}
-.reply .user .name{
-    font-size: 1.4rem;
+.reply .user{
+    font-size: 0.8rem;
 }
 .reply .user .name:hover{
     text-decoration: underline;
 }
-.reply .user .anonymous{
-    font-size: 1.4rem;
-}
 .reply .time{
-    font-size: 1.4rem;
+    font-size: 0.8rem;
 }
 .line{
     margin: 0 auto;
@@ -233,11 +273,23 @@ section{
     html{
       font-size: 13px;
     }
+    .post .like .count{
+        padding-left: 17px;
+    }
+    .reply .like .count{
+        padding-left: 12px;
+    }
 
 }
 @media only screen and (max-width: 530px){
     html{
       font-size: 10px;
+    }
+    .post .like .count{
+        padding-left: 13px;
+    }
+    .reply .like .count{
+        padding-left: 12px;
     }
 
 }
@@ -245,13 +297,6 @@ section{
     html{
         font-size: 8px;
     }
-    .post .contents{
-        display: block;
-        position: relative;
-    }
-    .reply .contents{
-        display: block;
-        margin:0 0 0 auto;
-        position: relative;
-    }
+
+
 }

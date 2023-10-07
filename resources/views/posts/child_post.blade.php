@@ -16,19 +16,20 @@
                         <div class="content">
                             <div class="likes">
                                 @if($post->is_liked_by_auth_user())
-                                    <a href="/unlike/{{$post->id}}" class="btn btn-success btn-sm">
-                                        <span style="color:#FF00CC">&hearts;</span>
-                                        <span class="badge">{{ $post->likes->count() }}</span>
+                                    <a href="/unlike/{{$post->id}}" class="like">
+                                        <span class="heart">&hearts;</span>
+                                        <span class="hovered">&#9825;</span>
+                                        <span class="count">{{ $post->likes->count() }}</span>
                                     </a>
                                 @else
-                                    <a href="/like/{{$post->id}}" class="btn btn-secondary btn-sm">
-                                        &#9825;
-                                        <span class="badge">{{ $post->likes->count() }}</span>
+                                    <a href="/like/{{$post->id}}" class="unlike">
+                                        <span class="heart">&#9825;</span>
+                                        <span class="count">{{ $post->likes->count() }}</span>
                                     </a>
                                 @endif
                             </div>
                             <div class='comment'>
-                                {{ $post->childposts->count() }}コメント
+                                <img src="{{ asset('images/balloon.svg') }}" class="balloon">{{ $post->childposts->count() }}
                             </div>
                             <a class="create_reply" href='/posts/{{$post->id}}/create/'>返信する</a>
                         </div>

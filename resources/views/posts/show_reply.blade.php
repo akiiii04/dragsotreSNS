@@ -8,19 +8,7 @@
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
         <link href="/css/show.css" rel="stylesheet">
-        <script>
-        function toggleContent() {
-            var content = document.getElementById("parent");
-            var button = document.getElementById("toggle-button");
-            if (content.style.display === "none") {
-                content.style.display = "block";
-                button.textContent = "元の投稿を非表示";
-            } else {
-                content.style.display = "none";
-                button.textContent = "元の投稿を表示";
-            }
-        }
-        </script>
+        
     </head>
     <body>
         <x-app-layout>
@@ -36,7 +24,7 @@
                         </div>
                     @endif
                     @if($parent->post_id==NULL)
-                        <div><a class="title" href="/posts/{{$parent->id}}">{{ Str::limit($parent->title, 56, '...') }}</a></div>
+                        <div class="title"><a href="/posts/{{$parent->id}}">{{ Str::limit($parent->title, 56, '...') }}</a></div>
                     @endif
                     <div class='tags'>
                         @foreach($parent->tags as $tag)
@@ -53,12 +41,17 @@
                             </div>
                         @endif
                     </div>
-                    <a class="body" href="/posts/{{$parent->id}}">
-                        {!! nl2br($parent->body) !!}
-                    </a>
+                    <div class="body">
+                        <a href="/posts/{{$parent->id}}">{!! nl2br($parent->body) !!}</a>
+                    </div>
                     @if($parent->user_id==Auth::user()->id)
                         <div class="edits">
                             <a class="edit" href="/posts/{{ $parent->id }}/edit">編集する</a>
+                            <form action="/posts/{{ $parent->id }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <input type="submit" class="delete" value="削除する"/>
+                            </form>
                             @if($parent->picture==NULL&&$parent->user_id==Auth::user()->id)
                                 <div class="add"><a href="/picture/{{ $parent->id }}/edit">画像を追加する</a></div>
                             @endif
@@ -68,25 +61,39 @@
                         <div class="content">
                             <div class="likes">
                                 @if($parent->is_liked_by_auth_user())
-                                    <a href="/unlike/{{$parent->id}}" class="btn btn-success btn-sm">いいね<span class="badge">{{ $parent->likes->count() }}</span></a>
+                                    <a href="/unlike/{{$parent->id}}" class="like">
+                                        <span class="heart">&hearts;</span>
+                                        <span class="hovered">&#9825;</span>
+                                        <span class="count">{{ $parent->likes->count() }}</span>
+                                    </a>
                                 @else
-                                    <a href="/like/{{$parent->id}}" class="btn btn-secondary btn-sm">いいね<span class="badge">{{ $parent->likes->count() }}</span></a>
+                                    <a href="/like/{{$parent->id}}" class="unlike">
+                                        <span class="heart">&#9825;</span>
+                                        <span class="count">{{ $parent->likes->count() }}</span>
+                                    </a>
                                 @endif
                             </div>
                             <div class='comment'>
-                                {{ $parent->childposts->count() }}コメント
+                                <img src="{{ asset('images/balloon.svg') }}" class="balloon">{{ $post->childposts->count() }}
                             </div>
                             <a class="create_reply" href='/parents/{{$parent->id}}/create/'>返信する</a>
                         </div>
                         <div class='user_time'>
                             <div class='user'>
-                                <span class="contributor">投稿者:</span>
-                                @if($parent->anonymity==1&&$parent->user_id!=Auth::user()->id)<a class='anonymous'>匿名希望投稿者</a>@endif
-                                @if($parent->anonymity==1&&$parent->user_id==Auth::user()->id)
-                                <a class='name' href='../../profile/{{$parent->user_id}}'>{{ $parent->user->name }}(匿名)</a>
-                                @endif
-                                @if($parent->anonymity==0)<a class='name' href='../../profile/{{$parent->user_id}}'>{{ $parent->user->name }}</a>@endif
-                            </div>
+                                    <span class="contributor">投稿者:</span>
+                                    @if($parent->user_id==Auth::user()->id)
+                                        <a class='name' href='../../profile/{{$parent->user_id}}'>自分</a>
+                                    @endif
+                                    @if($parent->anonymity==1&&$parent->user_id!=Auth::user()->id)
+                                        <a class='name'>匿名希望投稿者</a>
+                                    @endif
+                                    @if($parent->anonymity==1&&$parent->user_id==Auth::user()->id)
+                                        <a class='name' href='../../profile/{{$parent->user_id}}'>(匿名)</a>
+                                    @endif
+                                    @if($parent->anonymity==0&&$parent->user_id!=Auth::user()->id)
+                                        <a class='name' href='../../profile/{{$parent->user_id}}'>{{ $parent->user->name }}</a>
+                                    @endif
+                                </div>
                             <div class='time'>
                                 {{$parent->time_difference}}
                             </div>
@@ -105,31 +112,50 @@
                     @if($post->user_id==Auth::user()->id)
                         <div class="edits">
                             <a class="edit" href="/posts/{{ $post->id }}/edit">編集する</a>
+                            <form action="/posts/{{ $post->id }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <input type="submit" class="delete" value="削除する"/>
+                            </form>
                         </div>
                     @endif
                     <div class="contents">
                         <div class="content">
                             <div class="likes">
-                                @if($post->is_liked_by_auth_user())
-                                    <a href="/unlike/{{$post->id}}" class="btn btn-success btn-sm">いいね<span class="badge">{{ $post->likes->count() }}</span></a>
-                                @else
-                                    <a href="/like/{{$post->id}}" class="btn btn-secondary btn-sm">いいね<span class="badge">{{ $post->likes->count() }}</span></a>
-                                @endif
-                            </div>
+                                    @if($post->is_liked_by_auth_user())
+                                        <a href="/unlike/{{$post->id}}" class="like">
+                                            <span class="heart">&hearts;</span>
+                                            <span class="hovered">&#9825;</span>
+                                            <span class="count">{{ $post->likes->count() }}</span>
+                                        </a>
+                                    @else
+                                        <a href="/like/{{$post->id}}" class="unlike">
+                                            <span class="heart">&#9825;</span>
+                                            <span class="count">{{ $post->likes->count() }}</span>
+                                        </a>
+                                    @endif
+                                </div>
                             <div class='comment'>
-                                {{ $post->childposts->count() }}コメント
+                                <img src="{{ asset('images/balloon.svg') }}" class="balloon">{{ $post->childposts->count() }}
                             </div>
                             <a class="create_reply" href='/posts/{{$post->id}}/create/'>返信する</a>
                         </div>
                         <div class='user_time'>
                             <div class='user'>
-                                <span class="contributor">投稿者:</span>
-                                @if($post->anonymity==1&&$post->user_id!=Auth::user()->id)<a class='anonymous'>匿名希望投稿者</a>@endif
-                                @if($post->anonymity==1&&$post->user_id==Auth::user()->id)
-                                <a class='name' href='../../profile/{{$post->user_id}}'>{{ $post->user->name }}(匿名)</a>
-                                @endif
-                                @if($post->anonymity==0)<a class='name' href='../../profile/{{$post->user_id}}'>{{ $post->user->name }}</a>@endif
-                            </div>
+                                    <span class="contributor">投稿者:</span>
+                                    @if($post->user_id==Auth::user()->id)
+                                        <a class='name' href='../../profile/{{$post->user_id}}'>自分</a>
+                                    @endif
+                                    @if($post->anonymity==1&&$post->user_id!=Auth::user()->id)
+                                        <a class='name'>匿名希望投稿者</a>
+                                    @endif
+                                    @if($post->anonymity==1&&$post->user_id==Auth::user()->id)
+                                        <a class='name' href='../../profile/{{$post->user_id}}'>(匿名)</a>
+                                    @endif
+                                    @if($post->anonymity==0&&$post->user_id!=Auth::user()->id)
+                                        <a class='name' href='../../profile/{{$post->user_id}}'>{{ $post->user->name }}</a>
+                                    @endif
+                                </div>
                             <div class='time'>
                                 {{$post->time_difference}}
                             </div>
@@ -150,6 +176,18 @@
             </section>
             
         </x-app-layout>
-       
+       <script>
+        function toggleContent() {
+            var content = document.getElementById("parent");
+            var button = document.getElementById("toggle-button");
+            if (content.style.display === "none") {
+                content.style.display = "block";
+                button.textContent = "元の投稿を非表示";
+            } else {
+                content.style.display = "none";
+                button.textContent = "元の投稿を表示";
+            }
+        }
+        </script>
     </body>
 </html>

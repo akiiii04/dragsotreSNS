@@ -7,18 +7,7 @@
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
         <link href="/css/show.css" rel="stylesheet">
-        
-        <script>
-            function deletePost(id)
-            {
-                'use strict'
-        
-                if (confirm('削除すると復元できません。\n本当に削除しますか？'))   
-                {
-                    document.getElementById(`form_${id}`).submit();
-                }
-            }  
-        </script>
+
     </head>
     <body>
         <x-app-layout>
@@ -109,17 +98,25 @@
                         </div>
                     </div>
                 </div>
-                <div class='ALLreplies'>この投稿へのコメント
+                <div class='ALLreplies'>この投稿への返信
+                    <div class="noComment">この投稿にはまだ返信がありません</div>
+                    <!-- 削除済の投稿を含めてカウント-->
                     @if ($post->childPosts->count() > 0)
                         @foreach ($replies as $childPost)
-                           <div class="replies">@include('posts.child_post', ['post' => $childPost, 'parent' => $post->id])</div>
+                            @if ($childPost->childPosts->count() > 0 || !($childPost->deleted_at))
+                            <script>//返信が一つでも表示されればnoCommentを非表示に
+                                let noCommentElement = document.querySelector(".noComment");
+                                if (noCommentElement) {
+                                    noCommentElement.style.display = "none";
+                                }
+                            </script>
+                                <div class="replies">@include('posts.child_post', ['post' => $childPost, 'parent' => $post->id])</div>
+                            @endif
                         @endforeach
                     @endif
                 </div>
             </section> 
-        
-
         </x-app-layout>
-       
+       <script type="text/javascript" src="/js/show.js"></script>
     </body>
 </html>

@@ -1,9 +1,12 @@
 @charset "UTF-8";
 
+.space1{
+    padding: 20px 0;
+}
 section{
     width: 100%;
     max-width: 800px;
-    margin: 20px auto;
+    margin: 0px auto;
     padding: 0 10px;
     padding-top: 10px;
     padding-bottom: 100px;
@@ -18,13 +21,20 @@ section{
 }
 .p1{
     margin-bottom: 50px;
+    font-size: 1.3rem;
+}
+.p2{
+    font-size: 1.3rem;
+}
+.link{
+    color: #117ec6;
 }
 span{
     font-weight: bold;
 }
 @media only screen and (max-width: 640px){
     html{
-      font-size: 13px;
+      font-size: 16px;
     }
     section{
         border:0px;
@@ -32,11 +42,11 @@ span{
 }
 @media only screen and (max-width: 530px){
     html{
-      font-size: 10px;
+      font-size: 14px;
     }
 }
 @media only screen and (max-width: 410px){
     html{
-        font-size: 8px;
+        font-size: 10px;
     }
 }

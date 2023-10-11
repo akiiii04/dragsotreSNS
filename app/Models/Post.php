@@ -29,6 +29,7 @@ class Post extends Model
         return $this->hasMany(Post::class)->withTrashed();
     }
     
+    
     public function users()
     {
         return $this->belongsToMany(User::class);
@@ -59,32 +60,6 @@ class Post extends Model
         return $this->hasMany(Like::class, 'post_id');
     }
     
-    public function getSearchPost($type_id, $search) //キーワードに当てはまる投稿を返す
-    {
-        $limit_count = 10;
-        $spaceConversion = mb_convert_kana($search, 's'); //全角スペースを半角スペースへ
-        $wordArraySearched = explode(' ', $spaceConversion); //半角スペースを区切り文字に配列を作成
-            
-        $posts = $this->where('post_id', NULL)->where('type_id', $type_id)
-            ->where(function ($query) use ($wordArraySearched) {
-                foreach ($wordArraySearched as $keyword) { 
-                    $query->where('title', 'like', '%' . $keyword . '%')
-                        ->orWhere('body', 'like', '%' . $keyword . '%')
-                        ->orWhereHas('tags', function ($subquery) use ($keyword) {
-                          $subquery->where('name', 'like', '%' . $keyword . '%');
-                      });//それぞれのキーワードに対し、タイトル、本文、タグのいずれかに当てはまる投稿を返す
-                }
-            })->orderBy('updated_at', 'DESC')->paginate($limit_count);
-
-        return $posts;
-    }
-    
-    public function getPost($type_id){ //キーワードがない場合
-        $limit_count = 10;
-        $posts = $this->where('post_id', NULL)->where('type_id', $type_id)->orderBy('updated_at', 'DESC')->paginate($limit_count);
-        
-        return $posts;
-    }
     
     public function getTimeDifferenceAttribute()//現在時刻との差を取得
     {
@@ -103,10 +78,9 @@ class Post extends Model
     
     public function recursiveAllChildPosts($depth) //返信を再帰的に取得
     {
-
         $childPosts = $this->childPosts;
         $childPosts_sorted = $this->sortChildPosts($childPosts);
-        if ($depth > 1) {
+        if ($depth > 1 &&  $childPosts) {
             foreach ($childPosts_sorted as $childPost) {
                 $childPost->childPosts = $childPost->recursiveAllChildPosts($depth - 1);
             }
@@ -116,18 +90,10 @@ class Post extends Model
     
     public function sortChildPosts($childPosts) //表示するコメントの優先順位をつける
     {
-        return $childPosts->sort(function ($a, $b) {
-        $aLikesCount = $a->likes->count();
-        $bLikesCount = $b->likes->count();
-
-        // いいね数が同じ場合は投稿日時で比較
-        if ($aLikesCount === $bLikesCount) {
-            return $a->created_at <=> $b->created_at;
-        }
-
-        // いいね数で比較
-        return $bLikesCount <=> $aLikesCount;
-    });
+        return $childPosts->sortBy(function ($post) {
+        $hasDeletedAt = $post->deleted_at !== null ? 1 : 0;
+            return [$post->likes->count(), $post->created_at];
+        });
     }
 
     public function is_liked_by_auth_user()

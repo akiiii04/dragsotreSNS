@@ -16,15 +16,32 @@ class PostController extends Controller
     public function index(Post $post, $type, Request $request)
     {
         $search = $request->input('search');
+        $spaceConversion = mb_convert_kana($search, 's');
+        $keywordArray = explode(' ', $spaceConversion);
         
-        if($search){
-             return view('posts.index')->with(['posts' => $post->getSearchPost($type,$search)])
-             ->with(['search' => $search])
-             ->with(['type' => $type]);
+        $unsolved = $request->input('unsolved');
+        if($unsolved)$unsolvedValues = [1];
+        else $unsolvedValues = [0, 1];
+        
+        $query = Post::query();
+        
+        $query->where('post_id', NULL)->where('type_id', $type)->whereIn('unsolved', $unsolvedValues);
+        
+        foreach ($keywordArray as $keyword) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('title', 'like', '%' . $keyword . '%')
+                  ->orWhere('body', 'like', '%' . $keyword . '%')
+                  ->orWhereHas('tags', function ($subquery) use ($keyword) {
+                      $subquery->where('name', 'like', '%' . $keyword . '%');
+                  });
+            });
         }
-
-        else
-        return view('posts.index')->with(['posts' => $post->getPost($type)])->with(['type' => $type]);
+        $posts = $query->orderBy('updated_at', 'DESC')->paginate(10);
+        
+             return view('posts.index')->with(['posts' => $posts])
+             ->with(['search' => $search])
+             ->with(['type' => $type])
+             ->with(['unsolved' => $unsolved]);
     }
     
     public function create($type)

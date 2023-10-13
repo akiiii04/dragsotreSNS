@@ -26,7 +26,7 @@ class UserSeeder extends Seeder
                 'position' => 'パートナー',
                 'created_at' => new DateTime(),
                 'updated_at' => new DateTime(),
-         ]);//
+         ]);
          DB::table('users')->insert([
                 'name' => 'テストユーザー',
                 'email' => NULL,

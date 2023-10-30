@@ -50,7 +50,7 @@ section{
 }
 .type{
     display: flex;
-    gap: 30px;
+    gap: 1rem;
 }
 .trouble_now{
     font-size: 1rem;

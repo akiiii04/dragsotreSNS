@@ -42,7 +42,6 @@
                 @if($post->anonymity==0&&$post->user_id!=Auth::user()->id)
                     <a class='name' href='../../profile/{{$post->user_id}}/1'>{{ $post->user->name }}</a>
                 @endif
-                {{ $post->anonymity }}
             </div>
         <div class='time'>
             {{$post->time_difference}}

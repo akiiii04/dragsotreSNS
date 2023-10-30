@@ -31,11 +31,11 @@
                 <div class="who_list">{{$user->name}}の投稿一覧</div>
                 <div class="type">
                     @if($type==1)
-                    <div class="trouble">困ったこと</div>
+                    <div class="trouble_now">困ったこと</div>
                     <a class="info" href='/profile/{{$user->id}}/2'>役立つ情報</a>
                     @else
                     <a class="trouble" href='/profile/{{$user->id}}/1'>困ったこと</a>
-                    <div class="info" >役立つ情報</div>
+                    <div class="info_now" >役立つ情報</div>
                     @endif
                 </div>
                 @include('posts.components.postList')

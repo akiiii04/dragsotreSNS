@@ -52,7 +52,7 @@ section{
     display: flex;
     gap: 30px;
 }
-div.trouble{
+.trouble_now{
     font-size: 1rem;
     font-weight: bold;
     background: #2e8b57;
@@ -66,7 +66,7 @@ div.trouble{
     color: #ddd;
     transition: 0.1s ease-in-out;
 }
-a.info {
+.info {
     font-size: 1rem;
     font-weight: bold;
     background: #fff;
@@ -80,13 +80,13 @@ a.info {
     color: #888;
 
 }
-a.info:hover{
+.info:hover{
     color: #ddd;
     background: #2e8b57;
     border: 1px solid #fff;
     transition:  0.2s;
 }
-div.info{
+.info_now{
     font-size: 1rem;
     font-weight: bold;
     background: #2e8b57;

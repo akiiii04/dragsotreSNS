@@ -18,11 +18,11 @@
                     <div class="section">
                         <div class="type">
                             @if($type==1)
-                            <div class="trouble">困ったこと</div>
+                            <div class="trouble_now">困ったこと</div>
                             <a class="info" href='/2/index/'>役立つ情報</a>
                             @else
                             <a class="trouble" href='/1/index/'>困ったこと</a>
-                            <div class="info" >役立つ情報</div>
+                            <div class="info_now" >役立つ情報</div>
                             @endif
                         </div>
                         <div class="posting">

@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\User;
 use App\Models\Tag;
 use App\Models\Post_Tag;
-
 use App\Http\Requests\PostRequest;
 use Auth;
 use Cloudinary;
@@ -56,8 +56,15 @@ class PostController extends Controller
             $image_url = Cloudinary::upload($request->file('picture')->getRealPath())->getSecurePath();
             $input_post += ['picture' => $image_url];
          }
-
+        
         $post->fill($input_post)->save();
+        
+        if($post->post_id && $post->anonymity == 1){
+            $post->anonymity = $post->set_anonymity();
+            $post->save();
+        }
+        if($post->post_id)return redirect('/posts/' . $post->parentpost->id);
+        
         preg_match_all('/#([a-zA-Z0-9０-９ぁ-んァ-ヶー一-龠]+)/u', $request->tag_name, $match); //#表記されたタグを配列に格納
         foreach($match[1] as $input_tag)
         {
@@ -72,13 +79,11 @@ class PostController extends Controller
     public function show(Post $post)
     {
         if($post->post_id==NULL) //通常の投稿として処理
-        return view('posts.show')->with(['post' => $post])
-        ->with(['replies' => $post->getReply()]);
+        return view('posts.show')->with(['post' => $post]);
         
         else{ //返信として処理
             $parentPost = Post::find($post->post_id);
-            return view('posts.show_reply')->with(['post' => $post])
-                ->with(['replies' => $post->getReply()])->with(['parent' => $parentPost]);
+            return view('posts.show_reply')->with(['post' => $post]);
         }
 
     }
@@ -125,6 +130,10 @@ class PostController extends Controller
         if($post->user_id==Auth::id()){
             if($post->post_id==NULL){
                 $input_post = $request['post'];
+                if($input_post['anonymity'] == 1 && $post->anonymity == 0)
+                    $input_post['anonymity'] = $post->set_anonymity();
+                else if($input_post['anonymity'] == 1 && $post->anonymity > 0)
+                    $input_post['anonymity'] = $post->anonymity;
                 $post->fill($input_post)->save();
                 $tag_old=Post_Tag::where('post_id', $post->id)->delete(); //元々あったタグを削除
                 preg_match_all('/#([a-zA-Z0-9０-９ぁ-んァ-ヶー一-龠]+)/u', $request->tag_name, $match); //#表記されたタグを配列に格納
@@ -139,8 +148,12 @@ class PostController extends Controller
             }
             else{
                 $input_post = $request['post'];
+                if($input_post['anonymity'] == 1 && $post->anonymity == 0)
+                    $input_post['anonymity'] = $post->set_anonymity();
+                else if($input_post['anonymity'] == 1 && $post->anonymity > 0)
+                    $input_post['anonymity'] = $post->anonymity;
                 $post->fill($input_post)->save();
-                return redirect('/posts/' . $post->id);
+                return redirect('/posts/' . $post->parentpost->id);
             }
         }
     }
@@ -150,9 +163,15 @@ class PostController extends Controller
         return redirect($post->type_id . '/index');
     }
     
-        public function reply(Post $post)
+    public function reply(Post $post)
     {
         return view('posts.create_reply')->with(['post' => $post]);
     }
-    
+    public function show_profile(User $user, $type)
+    {
+        $posts = Post::where('user_id', $user->id)->where('post_id', NULL)->where('type_id', $type)
+            ->where('anonymity', 0)->orderBy('updated_at', 'DESC')->paginate(10);
+        return view('profile.show')->with(['user' => $user])->with(['posts' => $posts])->with(['type' => $type]);
+    }
+
 }

@@ -40,7 +40,7 @@
                     <div class="checkbox">
                         <div class="anonymity">
                             <input type="hidden" name="post[anonymity]" value=0>
-                            @if($post->anonymity==1)
+                            @if($post->anonymity!=0)
                             <input type="checkbox" checked="checked" name="post[anonymity]" value=1>匿名にする
                             @else
                             <input type="checkbox" name="post[anonymity]" value=1>匿名にする

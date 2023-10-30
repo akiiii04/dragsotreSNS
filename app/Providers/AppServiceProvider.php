@@ -29,9 +29,6 @@ class AppServiceProvider extends ServiceProvider
         \URL::forceScheme('https');
         $this->app['request']->server->set('HTTPS','on');
         
-        DB::listen(function ($query) {
-            \Log::info("({$query->time}) $query->sql");
-            \Log::info($query->bindings);
-        });
+
     }
 }

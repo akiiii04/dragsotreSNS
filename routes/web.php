@@ -34,10 +34,11 @@ Route::controller(PostController::class)->middleware(['auth'])->group(function()
     Route::get('/posts/{post}/create', 'reply')->name('reply');
     Route::get('/posts/{post}', 'show')->name('show');
     Route::put('/posts/{post}', 'update')->name('update');
-    Route::delete('/posts/{post}', 'delete')->name('delete'); //未実装
+    Route::delete('/posts/{post}', 'delete')->name('delete');
     Route::get('/posts/{post}/edit', 'edit')->name('edit');
     Route::get('/picture/{post}/edit', 'edit_picture')->name('edit_picture');
     Route::put('/picture/{post}', 'update_picture')->name('update_picture');
+    Route::get('/profile/{user}/{type}', 'show_profile')->name('profile.show');
 
     
 });
@@ -49,7 +50,7 @@ Route::controller(LikeController::class)->middleware(['auth'])->group(function()
 
 Route::controller(ProfileController::class)->middleware('auth')->group(function () {
     
-    Route::get('/profile/{user}', 'show')->name('profile.show');
+    
     Route::get('/profile', 'edit')->name('profile.edit');
     Route::patch('/profile', 'update')->name('profile.update');
     Route::delete('/profile',  'destroy')->name('profile.destroy');

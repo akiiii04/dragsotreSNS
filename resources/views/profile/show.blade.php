@@ -6,7 +6,7 @@
         <title>{{ $user->name }}</title>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-        <link href="/css/profile.css" rel="stylesheet">
+        <link href="/css/index.css" rel="stylesheet">
     </head>
     <body>
         <x-app-layout>
@@ -14,17 +14,31 @@
         　  {{ $user->name }}
              </x-slot>
              <section>
-                <h1 class="title">
-                    {{ $user->name }}
-                </h1>
-                <div class="affiliation">
-                    <div></div>
-                    <p>所属: {{ $user->affiliation }}</p>    
+                <div class="user_info">
+                    <h1 class="name">
+                        {{ $user->name }}
+                    </h1>
+                    <div class="affiliation">
+                        <div></div>
+                        <p>所属: {{ $user->affiliation }}</p>    
+                    </div>
+                    <div class="position">
+                        <div></div>
+                        <p>役職: {{ $user->position }}</p>    
+                    </div>
                 </div>
-                <div class="position">
-                    <div></div>
-                    <p>役職: {{ $user->position }}</p>    
+                <br>
+                <div class="who_list">{{$user->name}}の投稿一覧</div>
+                <div class="type">
+                    @if($type==1)
+                    <div class="trouble">困ったこと</div>
+                    <a class="info" href='/profile/{{$user->id}}/2'>役立つ情報</a>
+                    @else
+                    <a class="trouble" href='/profile/{{$user->id}}/1'>困ったこと</a>
+                    <div class="info" >役立つ情報</div>
+                    @endif
                 </div>
+                @include('posts.components.postList')
              </section>
         
 

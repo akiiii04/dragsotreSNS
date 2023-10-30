@@ -266,6 +266,12 @@ section{
     width: 1px;
     background-color: #000000;
 }
+.posts .space{
+    height: 2.5rem;
+}
+.bottom_space{
+    height: 30rem;
+}
 #toggle-button{
     font-size: 1.2rem;
     color: #117ec6;
@@ -276,11 +282,14 @@ section{
 #parent{
     position: relative;
     padding-top: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #333;
+
 }
 .parent_reply{
     font-size: 1.2rem;
+}
+.bottom_line{
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid #333;
 }
 @media only screen and (max-width: 640px){
     html{

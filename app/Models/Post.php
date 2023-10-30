@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Log;
 
 class Post extends Model
 {
@@ -29,7 +30,6 @@ class Post extends Model
         return $this->hasMany(Post::class)->withTrashed();
     }
     
-    
     public function users()
     {
         return $this->belongsToMany(User::class);
@@ -47,7 +47,7 @@ class Post extends Model
     
     public function parentpost()
     {
-        return $this->belongsTo(Post::class);
+        return $this->belongsTo(Post::class, 'post_id')->withTrashed();
     }
     
     public function types()
@@ -69,33 +69,102 @@ class Post extends Model
         return $createdAt->diffForHumans($now);
     }
     
+    public function getReplies()
+    {
+        $depth = 5; //取得するコメントの数を制限
+        $childPosts = $this->childposts;
+        return $this->sortChildPosts($childPosts);
+    }
+    
     public function getReply()
     {
         $depth = 5; //取得するコメントの数を制限
-        return $this->recursiveAllChildPosts($depth);
-        
-    }
-    
-    public function recursiveAllChildPosts($depth) //返信を再帰的に取得
-    {
-        $childPosts = $this->childPosts;
-        $childPosts_sorted = $this->sortChildPosts($childPosts);
-        if ($depth > 1 &&  $childPosts) {
-            foreach ($childPosts_sorted as $childPost) {
-                $childPost->childPosts = $childPost->recursiveAllChildPosts($depth - 1);
-            }
-        }
-        return $childPosts_sorted;
-    }
-    
-    public function sortChildPosts($childPosts) //表示するコメントの優先順位をつける
-    {
-        return $childPosts->sortBy(function ($post) {
-        $hasDeletedAt = $post->deleted_at !== null ? 1 : 0;
-            return [$post->likes->count(), $post->created_at];
-        });
+        $childPosts = $this->childposts;
+        return $this->sortChildPosts($childPosts)->first();
     }
 
+    public function sortChildPosts($childPosts) //削除されていない投稿を最優先に、いいね数でソート
+    {
+        return $childPosts->sortByDesc(function ($post) {
+        $hasDeletedAt = $post->deleted_at !== null ? 0 : 1;
+            return [$hasDeletedAt, $post->likes->count()];
+        });
+    }
+    
+    public function showable_reply($depth)//表示可能な深さ内にある投稿に1つでも削除されていない投稿があればtrue
+    {
+        if($depth < 1 || $this==NULL) return false;
+        else if($this->deleted_at == NULL) return true;
+        else{
+            foreach($this->childposts as $childpost){
+                if($childpost->showable_reply($depth - 1)) return true;
+            } 
+        } 
+        return false;
+    }
+    
+    public function getParentList()
+    {
+        $parentList = array();
+        if($this->post_id == NULL) return $parentList;
+        else if($this->parentpost) return $this->parentpost->getParentList_item($parentList);
+    }
+    public function getParentList_item($parentList)
+    {
+        array_unshift($parentList,$this);
+        if($this->post_id == NULL) return $parentList;
+        else if($this->parentpost) return $this->parentpost->getParentList_item($parentList);
+    }
+    
+    public function getMostParent()
+    {
+        if($this->post_id == NULL) return $this;
+        else if($this->parentpost) return $this->parentpost->getMostParent();
+    }
+    
+    public function set_anonymity()
+    {
+        $anonymity['number'] = 1;
+        $anonymity['flag'] = 0;
+        $post = $this->getMostParent();
+            if($post->anonymity != 0 && $post->user_id == $this->user_id) return $post->anonymity;
+            foreach($post->childposts as $childPost){
+                $anonymity = $childPost->set_anonymity_item($anonymity, $this->user_id, $this->id);
+                
+                if($anonymity['flag'] == 1)break;
+            }
+            return $anonymity['number'];
+    }
+    public function set_anonymity_item($anonymity, $user_id, $id)
+    {
+        if($this->anonymity != 0 && $this->user_id == $user_id && $this->id != $id){
+            $anonymity['number'] = $this->anonymity;
+            $anonymity['flag'] = 1;
+            return $anonymity;
+        } 
+        if($this->anonymity >= $anonymity['number'] && $this->user_id != $user_id) {
+            $anonymity['number'] = $this->anonymity + 1;
+        }
+        if($this->childposts){
+            foreach($this->childposts as $childPost){
+                $anonymity = $childPost->set_anonymity_item($anonymity, $user_id, $id);
+                if($anonymity['flag'] == 1)break;
+                
+            }
+        }
+        return $anonymity;
+    }
+    
+    public function display_name()
+    {
+        $anonymity = $this->anonymity;
+        if($anonymity == 0)return $this->user->name;
+        else {
+            if ($anonymity >= 1 && $anonymity <= 26) return "匿名投稿者".chr(64 + $anonymity);
+            else return "無効な入力"; 
+        }
+    }
+    
     public function is_liked_by_auth_user()
     {
         $id = Auth::id();
@@ -110,6 +179,11 @@ class Post extends Model
         } else {
           return false;
         }
+    }
+    
+    public function countReply()//削除済の投稿を含めずにカウント
+    {
+        return Post::where('post_id', $this->id)->count();
     }
 }
         /*foreach($posts as $post){

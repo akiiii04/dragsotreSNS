@@ -1,11 +1,15 @@
-function toggleContent() {
-    var content = document.getElementById("parent");
-    var button = document.getElementById("toggle-button");
-    if (content.style.display === "none") {
-        content.style.display = "block";
-        button.textContent = "元の投稿を非表示";
-    } else {
-        content.style.display = "none";
-        button.textContent = "元の投稿を表示";
-    }
-}
+$(function() {
+    const button = $("#toggle-button");
+    const height = $("#parent");
+
+    button.click(function() {
+        height.slideToggle(function() {
+            const isVisible = height.is(":visible");
+            if (isVisible) {
+                button.text("元の投稿を非表示");
+            } else {
+                button.text("元の投稿を表示");
+            }
+        });
+    });
+});

@@ -17,10 +17,7 @@
                         {{ __('トップページ') }}
                     </x-nav-link>
                     <x-nav-link :href="route('index', ['type' => 1])" :active="request()->is('1/index')">
-                        {{ __('困ったこと') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('index', ['type' => 2])" :active="request()->is('2/index')">
-                        {{ __('役立つ情報') }}
+                        {{ __('投稿一覧') }}
                     </x-nav-link>
                     
 
@@ -82,11 +79,9 @@
                 {{ __('トップページ') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('index', ['type' => 1])" :active="request()->is('1/index')">
-                {{ __('困ったこと') }}
+                {{ __('投稿一覧') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('index', ['type' => 2])" :active="request()->is('2/index')">
-                {{ __('役立つ情報') }}
-            </x-responsive-nav-link>
+
         </div>
 
         <!-- Responsive Settings Options -->

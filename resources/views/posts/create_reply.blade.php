@@ -22,7 +22,7 @@
         </x-slot>
             <section>
                 <button type="button" onclick="history.back()">返信をやめる</button>
-                <form action="/posts/" method="POST">
+                <form action="/posts" method="POST">
                     @csrf
                     <div class="body">
                         <textarea class="input" name="post[body]" placeholder="返信を記入">{{ old('post.body') }}</textarea>

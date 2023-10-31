@@ -126,13 +126,11 @@ class Post extends Model
     {
         $anonymity['number'] = 1;
         $anonymity['flag'] = 0;
+        
         $post = $this->getMostParent();
-            if($post->anonymity != 0 && $post->user_id == $this->user_id) return $post->anonymity;
-            foreach($post->childposts as $childPost){
-                $anonymity = $childPost->set_anonymity_item($anonymity, $this->user_id, $this->id);
-                
-                if($anonymity['flag'] == 1)break;
-            }
+        
+        $anonymity = $post->set_anonymity_item($anonymity, $this->user_id, $this->id);
+
             return $anonymity['number'];
     }
     public function set_anonymity_item($anonymity, $user_id, $id)

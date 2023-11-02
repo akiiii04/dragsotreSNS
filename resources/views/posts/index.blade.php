@@ -14,7 +14,13 @@
             　  @if ($type==1)困ったこと 投稿一覧@endif
             　  @if ($type==2)役立つ情報 投稿一覧@endif
              </x-slot>
+                @if (session('flash_message'))
+                    <div class="flash_message">
+                        {{ session('flash_message') }}
+                    </div>
+                @endif
                 <section>
+                    
                     <div class="section">
                         <div class="type">
                             @if($type==1)
@@ -42,6 +48,7 @@
                     @include('posts.components.postList')
                 </section>
         </x-app-layout>
+        <script src="https://code.jquery.com/jquery.min.js"></script>
         <script type="text/javascript" src="/js/index.js"></script>
     </body>
 </html>

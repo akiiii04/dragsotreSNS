@@ -122,7 +122,7 @@ class Post extends Model
         else if($this->parentpost) return $this->parentpost->getMostParent();
     }
     
-    public function set_anonymity()
+    public function set_anonymity()//匿名希望の投稿者が複数いても区別できるようにするためのもの
     {
         $anonymity['number'] = 1;
         $anonymity['flag'] = 0;
@@ -153,7 +153,7 @@ class Post extends Model
         return $anonymity;
     }
     
-    public function display_name()
+    public function display_name()//数値化で保存されているanonymityをアルファベットに変換
     {
         $anonymity = $this->anonymity;
         if($anonymity == 0)return $this->user->name;

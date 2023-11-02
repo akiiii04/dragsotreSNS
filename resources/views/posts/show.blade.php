@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{{ $post->title }}</title>
+        <title>ドラッグストアSNS</title>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
         <link href="/css/show.css" rel="stylesheet">
@@ -15,6 +15,11 @@
         　  {{ $post->title }}
             </x-slot>
             <section>
+                @if (session('flash_message'))
+                    <div class="flash_message">
+                        {{ session('flash_message') }}
+                    </div>
+                @endif
                 @include('posts.components.mostParent')
                 <div class='ALLreplies'>この投稿への返信
                     <div class="noComment">この投稿にはまだ返信がありません</div>

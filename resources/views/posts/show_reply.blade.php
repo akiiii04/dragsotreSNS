@@ -4,11 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="viewport" content="width=device-width">
-        @if(!isset($parent))
-            <title>削除済みの投稿に対する返信</title>
-        @else
-            <title>{{ Str::limit($parent->title, 56, '...') }}に対する返信</title>
-        @endif
+        <title>ドラッグストアSNS</title>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
         <link href="/css/show.css" rel="stylesheet">
@@ -23,6 +19,11 @@
                     {{ Str::limit($post->parentpost->title, 56, '...') }}に対する返信
                 @endif
             </x-slot>
+            @if (session('flash_message'))
+                <div class="flash_message">
+                    {{ session('flash_message') }}
+                </div>
+            @endif
             <section>
                 <button id="toggle-button" onclick="toggleContent()">元の投稿を表示</button>
                 <div class="posts" id="parent" style="display: none;">

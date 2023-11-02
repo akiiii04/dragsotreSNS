@@ -63,7 +63,7 @@ class PostController extends Controller
             $post->anonymity = $post->set_anonymity();
             $post->save();
         }
-        if($post->post_id)return redirect('/posts/' . $post->parentpost->id);
+        if($post->post_id)return redirect('/posts/' . $post->parentpost->id)->with('flash_message', '投稿を完了しました');
         
         preg_match_all('/#([a-zA-Z0-9０-９ぁ-んァ-ヶー一-龠]+)/u', $request->tag_name, $match); //#表記されたタグを配列に格納
         foreach($match[1] as $input_tag)
@@ -73,7 +73,7 @@ class PostController extends Controller
             $tag_id=Tag::where('name',$input_tag)->get(['id']);
             $post->tags()->attach($tag_id);
         }
-        return redirect('/posts/' . $post->id);
+        return redirect('/posts/' . $post->id)->with('flash_message', '投稿を完了しました');
     }
     
     public function show(Post $post)
@@ -122,7 +122,7 @@ class PostController extends Controller
         }
         else $input_post += ['picture' => NULL];
         $post->fill($input_post)->save();
-        return redirect('/posts/' . $post->id);
+        return redirect('/posts/' . $post->id)->with('flash_message', '画像を変更しました');
     }
     
     public function update(PostRequest $request, Post $post)
@@ -144,7 +144,7 @@ class PostController extends Controller
                     $tag_id=Tag::where('name',$input_tag)->get(['id']);
                     $post->tags()->attach($tag_id);
                 }
-                return redirect('/posts/' . $post->id);
+                return redirect('/posts/' . $post->id)->with('flash_message', '投稿を編集しました');
             }
             else{
                 $input_post = $request['post'];
@@ -153,14 +153,14 @@ class PostController extends Controller
                 else if($input_post['anonymity'] == 1 && $post->anonymity > 0)
                     $input_post['anonymity'] = $post->anonymity;
                 $post->fill($input_post)->save();
-                return redirect('/posts/' . $post->parentpost->id);
+                return redirect('/posts/' . $post->parentpost->id)->with('flash_message', '投稿を編集しました');
             }
         }
     }
     
     public function delete(Post $post){
-        $post->delete();    
-        return redirect($post->type_id . '/index');
+        $post->delete();
+        return redirect($post->type_id . '/index')->with('flash_message', '投稿を削除しました');
     }
     
     public function reply(Post $post)
